@@ -9,84 +9,107 @@ class Summation extends StatefulWidget {
 }
 
 class _SummationState extends State<Summation> {
-  int number1 = 0;
-  int number2 = 0;
+  final firstController = TextEditingController(text: '3');
+  final secondController = TextEditingController(text: '5');
+
   int result = 0;
   Arithemetic arithemetic = Arithemetic();
   void calculate(number1, number2) {
     setState(() {
-      result = arithemetic.add(number1, number2);
+      result = arithemetic.add(
+          int.parse(firstController.text), int.parse(secondController.text));
     });
     Navigator.pushNamed(context, "/outputRoute", arguments: result);
   }
 
+  final meroKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Sum"),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            children: [
-              const SizedBox(height: 10),
-              TextField(
-                keyboardType: TextInputType.number,
-                onChanged: (value) {
-                  number1 = int.parse(value);
-                },
-                decoration: const InputDecoration(
-                  labelText: 'num1 ',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20),
+      body: Form(
+        key: meroKey,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              children: [
+                const SizedBox(height: 10),
+                TextFormField(
+                  keyboardType: TextInputType.number,
+                  controller: firstController,
+                  decoration: const InputDecoration(
+                    labelText: 'num1 ',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20),
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.yellow),
                     ),
                   ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.green),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.yellow),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16.0),
-              TextField(
-                keyboardType: TextInputType.number,
-                onChanged: (value) {
-                  number2 = int.parse(value);
-                },
-                decoration: const InputDecoration(
-                  hintText: 'num2',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20),
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.green),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.yellow),
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    calculate(number1, number2);
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'please enter first number';
+                    }
+                    return null;
                   },
-                  child: const Text('Add'),
                 ),
-              ),
-              Text('Add : $result'),
-            ],
+                const SizedBox(height: 16.0),
+                TextFormField(
+                  keyboardType: TextInputType.number,
+                  controller: secondController,
+                  decoration: const InputDecoration(
+                    hintText: 'num2',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20),
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.yellow),
+                    ),
+                  ),
+                  validator: (String? value) {
+                    if (value!.isEmpty) {
+                      return 'please enter second number';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (meroKey.currentState!.validate()) {
+                        calculate(firstController, secondController);
+                      }
+                    },
+                    child: const Text('Add'),
+                  ),
+                ),
+                Text('Add : $result'),
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    firstController.dispose();
+    secondController.dispose();
+    super.dispose();
   }
 }

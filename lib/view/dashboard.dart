@@ -32,9 +32,33 @@ class Dashboard extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
+              Navigator.pushNamed(context, "/containerRoute");
+            },
+            child: const Text('Container View'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, "/columnRoute");
+            },
+            child: const Text('Column View'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, "/imageRoute");
+            },
+            child: const Text('Image View'),
+          ),
+          ElevatedButton(
+            onPressed: () {
               Navigator.pushNamed(context, "/summationView");
             },
             child: const Text('Calculate sum'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, "/mediaRoute");
+            },
+            child: const Text('Media Query View'),
           ),
           // ElevatedButton(
           //   onPressed: () {
